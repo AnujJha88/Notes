@@ -173,4 +173,18 @@ And then you look at if the most likely sentence is actually the answer. No samp
 
 # Data
 
-You basically train LLMs on all of (clean)internet. Internet is quite dirty and not representative of what we want in practice.
+You basically train LLMs on all of (clean)internet. Internet is quite dirty and not representative of what we want in practice. If you download a random website now it would contain a lot of useful stuff. 
+Steps:
+1. Download all of internet using web crawlers like Common Crawl(adds in all the new websites found every month. It is an established crawler)(~250 billion pages $\approx$ 1PB of data)
+![[Pasted image 20250626120209.png]]
+This is the raw data you crawl form the internet and so it is pretty much illegible.
+
+Not useful to train LLM to generate this.
+2. Extract text from this html by parsing the correct tags.
+3. Challenges here are math and boilerplates(e.g. forms have all the same headers and footers but will have widely varying content).
+4. Filter undesirable content(e.g. NSFW, harmful, PII etc.)(companies maintain a blacklist of websites and do not train on any data from them)(or train a small model to classify data into good or bad).
+5. Deduplication e.g. headers, footers, menus, URLs that go to same website, Paragraphs that are duplicated a ton of time across sources.
+6. Heuristic filtering to remove low quality documents based on rules that you define e.g. outlier tokens(unusual token distribution), length of words ,number of words etc. 
+
+Why not actively penalize the model for getting undesirable content? This is what is done in post-training. Pre-training you just try to model how humans speak and remove headers, footers and menus
+7. Model based filtering:
